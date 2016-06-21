@@ -1,0 +1,3 @@
+.main {
+  composes: bold italic from 'basscss/css/basscss.css';
+}

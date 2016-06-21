@@ -1,0 +1,4 @@
+.btn {
+  composes: caps m1 border from 'basscss/css/basscss.css';
+}
+

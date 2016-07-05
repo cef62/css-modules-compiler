@@ -3,16 +3,14 @@ const path = require('path')
 const read = require('fs-readdir-recursive')
 const postcss = require('postcss')
 const modules = require('postcss-modules')
+const Promise = require('bluebird')
 
 let styles
 let map
 
 const filter = (file) => file.endsWith('css')
 
-const getJSON = source => (cssFileName, json) => {
-  const relative = path.relative(source, cssFileName)
-  map[relative] = json
-}
+const getJSON = (source) => (cssFileName, json) => map[cssFileName] = json
 
 const store = (result) => styles.push(result.css)
 
@@ -32,7 +30,9 @@ const extract = (source, ...plugins) => {
   map = {}
 
   const files = read(source).filter(filter)
-  const processes = files.map(process(source, plugins))
+  const processes = files
+    .filter((file) => { console.log(file); return true })
+    .map(process(source, plugins))
 
   return Promise.all(processes).then(result)
 }

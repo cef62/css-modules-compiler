@@ -20,7 +20,7 @@ const convertCssMapToAstMap = (map) => Object.keys(map)
 const updateFilesystem = ({ file, code }) => {
   // write only files that have a truthy returned code value
   if (code) {
-    // return fs.writeFileAsync(file, code)
+    return fs.writeFileAsync(file, code)
   }
 }
 

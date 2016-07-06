@@ -5,6 +5,10 @@ const postcss = require('postcss')
 const modules = require('postcss-modules')
 const Promise = require('bluebird')
 
+const discardEmpty = require('./postcss/discard-empty')
+const discardDuplicates = require('./postcss/discard-duplicates')
+const discardComments = require('./postcss/discard-comments')
+
 let styles
 let map
 
@@ -23,7 +27,7 @@ const process = (source, plugins) => (file) => {
     .then(store)
 }
 
-const result = () => ({ styles: styles.join(''), map })
+const result = () => ({ styles: optimize(styles.join('')), map })
 
 const extract = (source, ...plugins) => {
   styles = []
@@ -31,10 +35,15 @@ const extract = (source, ...plugins) => {
 
   const files = read(source).filter(filter)
   const processes = files
-    .filter((file) => { console.log(file); return true })
     .map(process(source, plugins))
 
   return Promise.all(processes).then(result)
 }
 
-module.exports = { extract }
+const optimize = (css) => {
+  const plugins = [discardComments(), discardEmpty()]
+  return postcss(...plugins)
+    .process(css)
+}
+
+module.exports = { extract, optimize }

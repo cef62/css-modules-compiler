@@ -5,15 +5,16 @@ const read = require('fs-readdir-recursive')
 const t = require('babel-types')
 const del = require('del')
 
-const discardEmpty = require('postcss-discard-empty')
-const discardDuplicates = require('postcss-discard-duplicates')
-
 const { extract } = require('./css-modules-extractor')
 const { updateCssImports } = require('./update-css-modules-imports')
 
 const filter = (file) => file.endsWith('.js')
 
-const convertCssMapToAst = (map) => Object.keys(map).map((key) => t.objectProperty(t.identifier(key), t.stringLiteral(map[key])))
+const convertCssMapToAst = (map) =>
+  Object.keys(map).map((key) =>
+    t.objectProperty(t.identifier(key), t.stringLiteral(map[key]))
+  )
+
 const convertCssMapToAstMap = (map) => Object.keys(map)
   .reduce((acc, key) => acc.set(key, convertCssMapToAst(map[key])), new Map())
 
@@ -50,8 +51,8 @@ const cleanCss = (sourcePath) => ({ map, styles }) => {
 
 const concatenateCss = (targetFolder, targetName) => ({ map, styles }) => {
   const cssOutput = path.join(targetFolder, targetName)
-  fs.writeFileAsync(cssOutput, styles)
-  return { map, styles }
+  return fs.writeFileAsync(cssOutput, styles)
+    .then(() => ({ map, styles }))
 }
 
 const DEFAULT_OPTIONS = {
@@ -62,9 +63,6 @@ const DEFAULT_OPTIONS = {
 
 const compileCss = (source, options) => {
   const { plugins, targetFolder, targetName, targetCss } = Object.assign({}, DEFAULT_OPTIONS, options)
-
-  // TODO: add to docs to avoid passing this plugins to avoid duplicates
-  plugins.push(discardEmpty()/*, discardDuplicates()*/)
 
   return new Promise((resolve, reject) => {
     // check source is a valid paths
@@ -86,9 +84,9 @@ const compileCss = (source, options) => {
       .then(updateImports(sourcePath))
       .then(cleanCss(sourcePath))
       .then(concatenateCss(sourcePath, targetName))
+      .then(resolve)
       .catch((reason) => console.error(reason))
 
-    resolve()
   })
 }
 

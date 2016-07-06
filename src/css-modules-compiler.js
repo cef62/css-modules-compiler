@@ -26,9 +26,9 @@ const convertCssMapToAst = (map) =>
     }
   }
 
-  const updateImports = (sourcePath) => ({ map, styles }) => {
+  const updateImports = (sourcePath) => (opts) => {
     // create an array where values are in a valid AST object property
-    const astMap = convertCssMapToAstMap(map)
+    const astMap = convertCssMapToAstMap(opts.map)
 
     // JS files to check and if required update
     const processes = read(sourcePath)
@@ -42,24 +42,19 @@ const convertCssMapToAst = (map) =>
 
     return Promise.all(processes)
       .then(updateFilesystem)
-      .then(() => ({ map, styles }))
+      .then(() => (opts))
   }
 
-  const cleanCss = (sourcePath) => ({ map, styles }) => {
-    return del([`${sourcePath}/**/*.css`])
-      .then(() => ({ map, styles }))
+  const cleanCss = (sourcePath) => (opts) => {
+    const files = opts.files.map((file) => path.join(sourcePath, file))
+    return del(files)
+      .then(() => (opts))
   }
 
-  const concatenateCss = (targetFolder, targetName) => ({ map, styles }) => {
+  const concatenateCss = (targetFolder, targetName) => (opts) => {
     const cssOutput = path.join(targetFolder, targetName)
-    return fs.writeFileAsync(cssOutput, styles)
-      .then(() => ({ map, styles }))
-  }
-
-  const DEFAULT_OPTIONS = {
-    plugins: [],
-    targetFolder: null,
-    targetName: 'style.css'
+    return fs.writeFileAsync(cssOutput, opts.styles)
+      .then(() => (opts))
   }
 
   const copySourceFolder = (source, target) => {
@@ -75,11 +70,10 @@ const convertCssMapToAst = (map) =>
     }).then(() => target)
   }
 
-
-  const execCompileCss = (fileName, workingDir, plugins = []) => {
+  const execCompileCss = (fileName, workingDir, blacklist = [], plugins = []) => {
     return new Promise((resolve, reject) => {
       // extract css
-      extract(workingDir, ...plugins)
+      extract(workingDir, blacklist, ...plugins)
         .then(updateImports(workingDir))
         .then(cleanCss(workingDir))
         .then(concatenateCss(workingDir, fileName))
@@ -88,8 +82,18 @@ const convertCssMapToAst = (map) =>
     })
   }
 
+  const DEFAULT_OPTIONS = {
+    plugins: [],
+    targetFolder: null,
+    targetName: 'style.css',
+    blacklist: [],
+  }
+
   const compileCss = (source, options) => {
-    const { plugins, targetFolder, targetName } = Object.assign({}, DEFAULT_OPTIONS, options)
+    const {
+      plugins, targetFolder, targetName,
+      blacklist,
+    } = Object.assign({}, DEFAULT_OPTIONS, options)
 
     // check source is a valid paths
     let sourcePath = source
@@ -113,7 +117,7 @@ const convertCssMapToAst = (map) =>
         return reject(`Folder '${workingDir}' folder doesn't exist`)
       }
 
-      return execCompileCss(targetName, workingDir, plugins)
+      return execCompileCss(targetName, workingDir, blacklist, plugins)
     })
   }
 

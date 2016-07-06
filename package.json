@@ -1,6 +1,8 @@
 {
   "name": "css-modules-compiler",
   "version": "0.1.0",
+  "main": "src/index.js",
+  "bin" : "./bin/css-module-compiler.js",
   "description": "An automation task to compile css-modules and remove it from the components",
   "scripts": {
     "test": "mocha --compilers js:babel-register --reporter emoji-reporter --recursive",
@@ -41,7 +43,8 @@
     "fs-readdir-recursive": "^1.0.0",
     "postcss": "^5.0.21",
     "postcss-modules": "^0.5.0",
-    "rimraf": "2.5.3"
+    "rimraf": "2.5.3",
+    "shelljs": "0.7.0"
   },
   "engines": {
     "node": ">=6.0.0"

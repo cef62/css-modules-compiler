@@ -1,2 +1,23 @@
-**WIP** Experiments to comile css-modules to standalone css removing non standard code from
-javascript modules
+## Attention
+
+The module is still in active development, APIs may change often.
+
+## Css Modules Compiler
+
+The module take a folder of javascript sources using css-modules, optionally clone it, and then
+compile all the scoped css in a single file. The original css files are deleted and all the import
+in javascript files are substituted with static map generated with the css-modules compilation.
+
+## Tests
+
+Currently tests are broken
+
+## Try it
+
+To try the lib clone the repository, install `npm` deps and run 
+
+```
+./bin/css-module-compiler.js -s app -t build -n final.css
+```
+
+The `app` folder will be copied to `build` and then processed.

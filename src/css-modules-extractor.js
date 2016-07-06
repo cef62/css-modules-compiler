@@ -4,6 +4,7 @@ const read = require('fs-readdir-recursive')
 const postcss = require('postcss')
 const modules = require('postcss-modules')
 const Promise = require('bluebird')
+const minimatch = require('minimatch')
 
 const discardEmpty = require('./postcss/discard-empty')
 const discardDuplicates = require('./postcss/discard-duplicates')
@@ -11,8 +12,15 @@ const discardComments = require('./postcss/discard-comments')
 
 let styles
 let map
+let files
 
-const filter = (file) => file.endsWith('css')
+const filter = (blacklist = []) => (file) => {
+  // treat only css files
+  if (file.endsWith('css')) {
+    // check if the file must be blacklisted
+    return !blacklist.some((rule) => minimatch(file, rule, { matchBase: true }))
+  }
+}
 
 const getJSON = (source) => (cssFileName, json) => map[cssFileName] = json
 
@@ -27,13 +35,14 @@ const process = (source, plugins) => (file) => {
     .then(store)
 }
 
-const result = () => ({ styles: optimize(styles.join('')), map })
+const result = () => ({ styles: optimize(styles.join('')), map, files })
 
-const extract = (source, ...plugins) => {
+const extract = (source, blacklist = [], ...plugins) => {
   styles = []
   map = {}
 
-  const files = read(source).filter(filter)
+  files = read(source).filter(filter(blacklist))
+
   const processes = files
     .map(process(source, plugins))
 

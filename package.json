@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "del": "2.2.1",
+    "fs-extra": "0.30.0",
     "fs-readdir-recursive": "^1.0.0",
     "postcss": "^5.0.21",
     "postcss-modules": "^0.5.0",

@@ -41,7 +41,7 @@ const extract = (source, ...plugins) => {
 }
 
 const optimize = (css) => {
-  const plugins = [discardComments(), discardEmpty()]
+  const plugins = [discardComments(), discardDuplicates(), discardEmpty()]
   return postcss(...plugins)
     .process(css)
 }

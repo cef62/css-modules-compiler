@@ -17,7 +17,7 @@ Currently tests are broken
 To try the lib clone the repository, install `npm` deps and run 
 
 ```
-./bin/css-module-compiler.js -s app -t build -n final.css
+./bin/css-module-compiler.js -s tmp -t build -n final.css
 ```
 
-The `app` folder will be copied to `build` and then processed.
+The `tmp` folder will be copied to `build` and then processed.

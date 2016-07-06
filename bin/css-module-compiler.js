@@ -8,7 +8,7 @@ const {
   plugins = [],
   name,
 } = require('yargs')
-.usage(`$0 -s app -t dist -n concatenated-style.css -p postcss-cssnext autoprefixer`)
+.usage(`$0 -s sourceFolder -t targetFolder -n style.css -p postcss-cssnext autoprefixer`)
 .help()
 .option('s', {
   alias: 'source',

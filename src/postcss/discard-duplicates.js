@@ -1,4 +1,4 @@
-const postcss = require('postcss');
+const postcss = require('postcss')
 
 const ROOT = 'root'
 const msg = { type: 'removal', plugin: 'postcss-discard-duplicates' }
@@ -14,7 +14,7 @@ const discardDuplicates = (css, result) => {
       const nodeLiteral = node.toString().replace(/(\s{2,})|(\r)|(\n)/gm, ' ')
 
       // if th eliteral is already stored remove the duplicate, otherwise store it
-      if(cache.has(nodeLiteral)) {
+      if (cache.has(nodeLiteral)) {
         node.remove()
         result.messages.push(Object.assign({}, msg, { node }))
       } else {
@@ -33,7 +33,7 @@ const discardDuplicates = (css, result) => {
 
     // first check if exists an identical atRule block
     let checkChildren = true
-    if(cache.has(nodeLiteral) || !node.nodes.length) {
+    if (cache.has(nodeLiteral) || !node.nodes.length) {
       checkChildren = false
       node.removeAll()
       node.remove()
@@ -68,7 +68,6 @@ const discardDuplicates = (css, result) => {
       })
     }
   })
-
 }
 
 module.exports = postcss.plugin('postcss-discard-duplicates', () => discardDuplicates)

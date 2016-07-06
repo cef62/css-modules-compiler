@@ -23,4 +23,7 @@ const discardEmpty = (css, result) => {
   css.each(discard)
 }
 
-module.exports = postcss.plugin('postcss-discard-empty', () => (css, result) => discardEmpty(css, result))
+module.exports = postcss.plugin(
+  'postcss-discard-empty',
+  () => (css, result) => discardEmpty(css, result)
+)

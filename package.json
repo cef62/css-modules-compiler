@@ -6,7 +6,8 @@
   "description": "An automation task to compile css-modules and remove it from the components",
   "scripts": {
     "test": "mocha --compilers js:babel-register --reporter emoji-reporter --recursive",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "lint": "eslint ./src"
   },
   "authors": [
     "Matteo Ronchi <matteo.ronchi@gmail.com>",

@@ -20,9 +20,11 @@ const filter = (blacklist = []) => (file) => {
     // check if the file must be blacklisted
     return !blacklist.some((rule) => minimatch(file, rule, { matchBase: true }))
   }
+
+  return false
 }
 
-const getJSON = (source) => (cssFileName, json) => map[cssFileName] = json
+const getJSON = (cssFileName, json) => (map[cssFileName] = json)
 
 const store = (result) => styles.push(result.css)
 
@@ -30,9 +32,15 @@ const process = (source, plugins) => (file) => {
   const fromPath = path.join(source, file)
   const css = fs.readFileSync(fromPath)
 
-  return postcss(...plugins, modules({ getJSON: getJSON(source) }))
+  return postcss(...plugins, modules({ getJSON }))
     .process(css, { from: fromPath })
     .then(store)
+}
+
+const optimize = (css) => {
+  const plugins = [discardComments(), discardDuplicates(), discardEmpty()]
+  return postcss(...plugins)
+    .process(css)
 }
 
 const result = () => ({ styles: optimize(styles.join('')), map, files })
@@ -47,12 +55,6 @@ const extract = (source, blacklist = [], ...plugins) => {
     .map(process(source, plugins))
 
   return Promise.all(processes).then(result)
-}
-
-const optimize = (css) => {
-  const plugins = [discardComments(), discardDuplicates(), discardEmpty()]
-  return postcss(...plugins)
-    .process(css)
 }
 
 module.exports = { extract, optimize }

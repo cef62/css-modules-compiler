@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cef62/css-modules-compiler.svg?branch=extractor-tests)](https://travis-ci.org/cef62/css-modules-compiler)
+
 ## Attention
 
 The module is still in active development, APIs may change often.

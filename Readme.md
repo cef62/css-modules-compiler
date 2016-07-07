@@ -14,10 +14,10 @@ Currently tests are broken
 
 ## Try it
 
-To try the lib clone the repository, install `npm` deps and run 
+To try the lib clone the repository, install `npm` deps and run
 
 ```
-./bin/css-module-compiler.js -s tmp -t build -n final.css
+./bin/css-modules-compiler.js -s tmp -t build -n final.css
 ```
 
 The `tmp` folder will be copied to `build` and then processed.

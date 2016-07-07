@@ -1,3 +1,3 @@
-const { compileCss } = require('../src/css-modules-compiler')
+const { compileCss } = require('../src/compiler')
 
 module.exports = compileCss

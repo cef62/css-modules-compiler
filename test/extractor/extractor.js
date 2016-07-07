@@ -3,7 +3,7 @@ import path from 'path'
 import assert from 'assert'
 import atImport from 'postcss-import'
 
-import { extract } from '../../src/css-modules-extractor'
+import { extract } from '../../src/extractor'
 
 describe('extract', () => {
   describe('basic', () => {

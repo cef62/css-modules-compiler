@@ -5,46 +5,27 @@ import atImport from 'postcss-import'
 
 import { extract } from '../../src/extractor'
 
+const test = (type, blacklist = [], ...plugins) => {
+  describe(type, () => {
+    const root = path.join(__dirname, `./${type}`)
+    const styles = fs.readFileSync(`${root}/expected/styles.css`)
+    const map = require(`${root}/expected/map.js`)(`${root}/fixtures`)
+
+    it('works', done => {
+      extract(`${root}/fixtures/app`, blacklist, ...plugins)
+        .then(result => {
+          assert.equal(result.styles, styles.toString())
+          assert.deepEqual(result.map, map)
+        })
+        .then(done, done)
+    })
+  })
+}
+
 describe('extract', () => {
-  describe('basic', () => {
-    const styles = fs.readFileSync(path.join(__dirname, './basic/expected/styles.css'))
-    const map = fs.readFileSync(path.join(__dirname, './basic/expected/map.json'))
-
-    it('works', done => {
-      extract(path.join(__dirname, './basic/fixtures'))
-        .then(result => {
-          assert.equal(result.styles, styles.toString())
-          assert.deepEqual(result.map, JSON.parse(map))
-        })
-        .then(done, done)
-    })
-  })
-
-  describe('composes', () => {
-    const styles = fs.readFileSync(path.join(__dirname, './composes/expected/styles.css'))
-    const map = fs.readFileSync(path.join(__dirname, './composes/expected/map.json'))
-
-    it('works', done => {
-      extract(path.join(__dirname, './composes/fixtures/app'))
-        .then(result => {
-          assert.equal(result.styles, styles.toString())
-          assert.deepEqual(result.map, JSON.parse(map))
-        })
-        .then(done, done)
-    })
-  })
-
-  describe('plugins', () => {
-    const styles = fs.readFileSync(path.join(__dirname, './plugins/expected/styles.css'))
-    const map = fs.readFileSync(path.join(__dirname, './plugins/expected/map.json'))
-
-    it('works', done => {
-      extract(path.join(__dirname, './plugins/fixtures/app'), atImport())
-        .then(result => {
-          assert.equal(result.styles, styles.toString())
-          assert.deepEqual(result.map, JSON.parse(map))
-        })
-        .then(done, done)
-    })
-  })
+  test('basic')
+  test('blacklist', ['*.global.css'])
+  test('composes')
+  test('optimize')
+  test('plugins', [], atImport())
 })

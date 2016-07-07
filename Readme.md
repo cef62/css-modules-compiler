@@ -10,7 +10,9 @@ in javascript files are substituted with static map generated with the css-modul
 
 ## Tests
 
-Currently tests are broken
+```
+npm test
+```
 
 ## Try it
 

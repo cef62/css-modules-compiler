@@ -6,8 +6,8 @@ const read = require('fs-readdir-recursive')
 const t = require('babel-types')
 const del = require('del')
 
-const { extract } = require('./css-modules-extractor')
-const { updateCssImports } = require('./update-css-modules-imports')
+const { extract } = require('./extractor')
+const { updateCssImports } = require('./update-imports')
 
 const filter = (file) => file.endsWith('.js')
 

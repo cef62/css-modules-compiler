@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cef62/css-modules-compiler.svg?branch=extractor-tests)](https://travis-ci.org/cef62/css-modules-compiler)
+
 ## Attention
 
 The module is still in active development, APIs may change often.
@@ -10,7 +12,9 @@ in javascript files are substituted with static map generated with the css-modul
 
 ## Tests
 
-Currently tests are broken
+```
+npm test
+```
 
 ## Try it
 

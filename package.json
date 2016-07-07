@@ -5,7 +5,7 @@
   "bin": "./bin/css-modules-compiler.js",
   "description": "An automation task to compile css-modules and remove it from the components",
   "scripts": {
-    "test": "mocha --compilers js:babel-register --reporter emoji-reporter --recursive",
+    "test": "NODE_ENV=test mocha --compilers js:babel-register --reporter emoji-reporter --recursive",
     "test:watch": "npm test -- --watch",
     "lint": "eslint ./src"
   },
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/cef62/css-modules-compiler#readme",
   "devDependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
     "basscss": "8.0.1",
     "emoji-reporter": "0.3.0",
     "eslint": "3.0.0",
@@ -30,7 +31,8 @@
     "eslint-plugin-import": "1.10.0",
     "eslint-plugin-jsx-a11y": "1.5.3",
     "eslint-plugin-react": "5.2.2",
-    "mocha": "2.5.3"
+    "mocha": "2.5.3",
+    "postcss-import": "^8.1.2"
   },
   "dependencies": {
     "babel": "6.5.2",

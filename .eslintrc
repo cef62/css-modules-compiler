@@ -5,6 +5,7 @@
   },
   "rules": {
     "semi": [2, "never"],
-    "quotes": [2, "single", {"allowTemplateLiterals": true}]
+    "quotes": [2, "single", {"allowTemplateLiterals": true}],
+    "global-require": 0
   }
 }

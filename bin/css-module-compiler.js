@@ -7,30 +7,30 @@ const {
   target,
   plugins = [],
   name,
-  blacklist = []
+  blacklist = [],
 } = require('yargs')
-.usage(`$0 -s sourceFolder -t targetFolder -n style.css -p postcss-cssnext autoprefixer`)
+.usage('$0 -s sourceFolder -t targetFolder -n style.css -p postcss-cssnext autoprefixer')
 .help()
 .option('s', {
   alias: 'source',
   demand: true,
   requiresArg: true,
   describe: 'Source folder to be processed, can be a relative or an absolute path.',
-  type: 'string'
+  type: 'string',
 })
 .option('t', {
   alias: 'target',
   requiresArg: true,
   describe: 'Target folder, if defined the source folder will be copied to the given '
     + 'path and the modules will process the duplicated folder.',
-  type: 'string'
+  type: 'string',
 })
 .option('p', {
   alias: 'plugins',
   requiresArg: true,
   describe: 'Space separated string of names of npm postcss plugins.'
     + ' This parameter must be defined as last.',
-  type: 'array'
+  type: 'array',
 })
 .option('n', {
   alias: 'name',
@@ -55,11 +55,11 @@ const options = {
 }
 
 compileCss(source, options)
-  .then((res) => {
+  .then(() => {
     echo('Css modules compiled!')
     exit(0)
   })
   .catch((res) => {
-    echo(`Error Compiling css Modules:`, res)
+    echo('Error Compiling css Modules:', res)
     exit(1)
   })

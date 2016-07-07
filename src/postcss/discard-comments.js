@@ -11,4 +11,7 @@ const discardComments = (css, result) => {
   })
 }
 
-module.exports = postcss.plugin('postcss-discard-comments', () => (css, result) => discardComments(css, result))
+module.exports = postcss.plugin(
+  'postcss-discard-comments',
+  () => (css, result) => discardComments(css, result)
+)

@@ -7,17 +7,15 @@ import { extract } from '../../src/extractor'
 
 const test = (type, blacklist = [], ...plugins) => {
   describe(type, () => {
-    const root = path.join(__dirname, `./${type}`)
-    const styles = fs.readFileSync(`${root}/expected/styles.css`)
-    const map = require(`${root}/expected/map.js`)(`${root}/fixtures`)
+    it('works', () => {
+      const root = path.join(__dirname, `./${type}`)
+      const styles = fs.readFileSync(`${root}/expected/styles.css`)
+      const map = require(`${root}/expected/map.js`)(`${root}/fixtures`)
 
-    it('works', done => {
-      extract(`${root}/fixtures/app`, blacklist, ...plugins)
-        .then(result => {
-          assert.equal(result.styles, styles.toString())
-          assert.deepEqual(result.map, map)
-        })
-        .then(done, done)
+      return extract(`${root}/fixtures/app`, blacklist, ...plugins).then(result => {
+        assert.equal(result.styles, styles.toString())
+        assert.deepEqual(result.map, map)
+      })
     })
   })
 }

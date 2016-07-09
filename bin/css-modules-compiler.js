@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
-const { echo, exit } = require('shelljs')
+const { exit } = require('shelljs')
+const emoji = require('node-emoji')
+const debug = require('debug')('cmc:bin')
+const error = require('debug')('cmc:bin:error')
+
 const compileCss = require('../src')
 const {
   source,
@@ -56,10 +60,10 @@ const options = {
 
 compileCss(source, options)
   .then(() => {
-    echo('Css modules compiled!')
+    debug(`Css modules compiled! ${emoji.get(':punch:')}`)
     exit(0)
   })
   .catch((res) => {
-    echo('Error Compiling css Modules:', res)
+    error(`Error Compiling css Modules ${emoji.get(':rotating_light:')}`, res)
     exit(1)
   })

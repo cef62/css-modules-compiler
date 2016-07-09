@@ -5,6 +5,7 @@ const path = require('path')
 const read = require('fs-readdir-recursive')
 const t = require('babel-types')
 const del = require('del')
+const listSelectors = require('list-selectors')
 
 const { extract } = require('./extractor')
 const { updateCssImports } = require('./update-imports')
@@ -61,8 +62,39 @@ const cleanCss = (sourcePath) => (opts) => {
 const concatenateCss = (targetFolder, targetName) => (opts) => {
   const cssOutput = path.join(targetFolder, targetName)
   return fs.writeFileAsync(cssOutput, opts.styles)
-    .then(() => (opts))
+    .then(() => Object.assign({}, opts, { cssOutput }))
 }
+
+const clearJsonMap = (opts) => new Promise((resolve) => {
+  // retrieve css classes list
+  listSelectors(opts.cssOutput, { include: ['classes'] }, (list) => {
+    // remove selectors initial dot
+    const selectors = list.classes.reduce((acc, sel) => acc.add(sel.slice(1)), new Set())
+
+    /* eslint-disable no-param-reassign */
+    // remove non existent classes from JSON map
+    const map = Object.keys(opts.map).reduce((acc, key) => {
+      // file import map
+      const value = opts.map[key]
+
+      // iterate every key of the import object
+      const newValue = Object.keys(value).reduce((res, subKey) => {
+        res[subKey] = value[subKey]
+          .split(' ')
+          .filter((className) => selectors.has(className))
+          .join(' ')
+        return res
+      }, {})
+
+      // store int the updated map
+      acc[key] = newValue
+      return acc
+    }, {})
+    /* eslint-enable */
+
+    resolve(Object.assign({}, opts, { map }))
+  })
+})
 
 const copySourceFolder = (source, target) => {
   if (!target || source === target) {
@@ -81,9 +113,10 @@ const execCompileCss = (fileName, workingDir, blacklist = [], plugins = []) =>
   new Promise((resolve) => {
     // extract css
     extract(workingDir, blacklist, ...plugins)
-      .then(updateImports(workingDir))
       .then(cleanCss(workingDir))
       .then(concatenateCss(workingDir, fileName))
+      .then(clearJsonMap)
+      .then(updateImports(workingDir))
       .then(resolve)
       .catch((reason) => { error(reason) })
   })

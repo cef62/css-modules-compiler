@@ -10,6 +10,8 @@ const discardEmpty = require('./postcss/discard-empty')
 const discardDuplicates = require('./postcss/discard-duplicates')
 const discardComments = require('./postcss/discard-comments')
 
+const debug = require('debug')('cmc:extractor')
+
 let styles
 let map
 let files
@@ -41,6 +43,9 @@ const extract = (source, blacklist = [], ...plugins) => {
   styles = []
   map = {}
   files = read(source).filter(filter(blacklist))
+
+  debug(`Extracting css-modules from [${source}]:`)
+  files.map((f) => debug(`-- ${f}`))
 
   const processes = files.map(process(source, plugins))
 

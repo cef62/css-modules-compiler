@@ -10,6 +10,10 @@ const listSelectors = require('list-selectors')
 const { extract } = require('./extractor')
 const { updateCssImports } = require('./update-imports')
 
+const chalk = require('chalk')
+const debug = require('debug')('cmc:compiler')
+const error = require('debug')('cmc:compiler:error')
+
 const filter = (file) => file.endsWith('.js')
 
 const convertCssMapToAst = (map) =>
@@ -42,6 +46,7 @@ const updateImports = (sourcePath) => (opts) => {
         .then((code) => ({ file, code }))
         .then(updateFilesystem)
     )
+  // FIXME: seems that running babel in parallel is really slow, try to run it in a sequence
 
   return Promise.all(processes)
     .then(updateFilesystem)
@@ -113,7 +118,7 @@ const execCompileCss = (fileName, workingDir, blacklist = [], plugins = []) =>
       .then(clearJsonMap)
       .then(updateImports(workingDir))
       .then(resolve)
-      .catch((reason) => console.error(reason))
+      .catch((reason) => { error(reason) })
   })
 
 const DEFAULT_OPTIONS = {
@@ -143,12 +148,18 @@ const compileCss = (source, options) => {
     }
   }
 
+  debug(`Compile with options:`)
+  debug(`-- ${chalk.inverse.bold('source')}: ${sourcePath}`)
+  debug(`-- ${chalk.inverse.bold('target')}: ${targetFolderPath}`)
+  debug(`-- ${chalk.inverse.bold('name')}: ${targetName}`)
+  debug(`-- ${chalk.inverse.bold('blacklist')}: ${blacklist}`)
+
   return copySourceFolder(sourcePath, targetFolderPath).then((workingDir) => {
     // Check if source exists
     try {
       fs.accessSync(workingDir, fs.F_OK)
     } catch (e) {
-      console.log(`Folder '${workingDir}' folder doesn't exist`)
+      error(`Folder '${workingDir}' folder doesn't exist.`)
     }
 
     return execCompileCss(targetName, workingDir, blacklist, plugins)

@@ -7,9 +7,13 @@ const t = require('babel-types')
 const template = require('babel-template')
 const generate = require('babel-generator').default
 
+const chalk = require('chalk')
+const debug = require('debug')('cmc:updater')
+const error = require('debug')('cmc:updater:error')
+
 const buildStaticCssReference = template('const IMPORT_NAME = SOURCE')
 
-const traverseCode = (ast, currentFileFolder, contentsMap, verbose) =>
+const traverseCode = (ast, currentFileFolder, contentsMap) =>
   new Promise((resolve, reject) => {
     let mutated = false
 
@@ -24,10 +28,10 @@ const traverseCode = (ast, currentFileFolder, contentsMap, verbose) =>
           const sourceName = path.resolve(currentFileFolder, traversedPath.node.source.value)
 
           if (!contentsMap.has(sourceName)) {
-            if (verbose) {
-              console.error(`No static content received for import of ${sourceName}`)
-            }
+            error(`No static content received for import of ${chalk.inverse.bold('sourceName')}`)
           } else {
+            debug(`-- ${chalk.inverse(sourceName)}`)
+
             // array of ObjectProperty instances
             const staticContent = contentsMap.get(sourceName)
 
@@ -57,11 +61,12 @@ const traverseCode = (ast, currentFileFolder, contentsMap, verbose) =>
     if (mutated) {
       resolve()
     } else {
+      debug(`-- No css imports found!`)
       reject()
     }
   })
 
-const updateCssImports = (file, contentsMap, verbose = false) => {
+const updateCssImports = (file, contentsMap) => {
   const currentFileFolder = path.dirname(file)
 
   // read given file contents
@@ -75,8 +80,10 @@ const updateCssImports = (file, contentsMap, verbose = false) => {
         plugins: ['jsx', 'flow'],
       })
 
+      debug(`Search for css-modules imports in: ${chalk.red.bold(file)}`)
+
       // traverse the AST searching for css import statements
-      return traverseCode(ast, currentFileFolder, contentsMap, verbose)
+      return traverseCode(ast, currentFileFolder, contentsMap)
         .then(() => generate(ast, {}, code).code)
         .catch(() => false)
     })

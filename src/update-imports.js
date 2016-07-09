@@ -80,7 +80,7 @@ const updateCssImports = (file, contentsMap) => {
         plugins: ['jsx', 'flow'],
       })
 
-      debug(`Search for  css-modules imports in: ${chalk.red.bold(file)}`)
+      debug(`Search for css-modules imports in: ${chalk.red.bold(file)}`)
 
       // traverse the AST searching for css import statements
       return traverseCode(ast, currentFileFolder, contentsMap)

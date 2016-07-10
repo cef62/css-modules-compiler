@@ -1,5 +1,6 @@
 .DS_Store
 .vimsession
+.opt-in
 npm-debug.log
 node_modules
 build

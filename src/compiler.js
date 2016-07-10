@@ -3,10 +3,10 @@ const fs = Promise.promisifyAll(require('fs'))
 const fsExtra = Promise.promisifyAll(require('fs-extra'))
 const path = require('path')
 const read = require('fs-readdir-recursive')
-const t = require('babel-types')
 const del = require('del')
 const listSelectors = require('list-selectors')
 
+const { convertCssMapToAstMap } = require('./transformer')
 const { extract } = require('./extractor')
 const { updateCssImports } = require('./update-imports')
 
@@ -15,14 +15,6 @@ const debug = require('debug')('cmc:compiler')
 const error = require('debug')('cmc:compiler:error')
 
 const filter = (file) => file.endsWith('.js')
-
-const convertCssMapToAst = (map) =>
-  Object.keys(map).map((key) =>
-    t.objectProperty(t.identifier(key), t.stringLiteral(map[key]))
-  )
-
-const convertCssMapToAstMap = (map) => Object.keys(map)
-  .reduce((acc, key) => acc.set(key, convertCssMapToAst(map[key])), new Map())
 
 const updateFilesystem = ({ file, code }) => {
   // write only files that have a truthy returned code value

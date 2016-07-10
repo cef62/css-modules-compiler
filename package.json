@@ -7,7 +7,7 @@
   "scripts": {
     "test": "NODE_ENV=test mocha --compilers js:babel-register --reporter emoji-reporter ./test/**/*.spec.js",
     "test:watch": "npm test -- --watch",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src ./test/**/*.spec.js"
   },
   "authors": [
     "Matteo Ronchi <matteo.ronchi@gmail.com>",

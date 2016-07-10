@@ -65,12 +65,14 @@ const getPlugins = (confFile, pluginsList) => {
   let res
   if (confFile) {
     // get full path to config file
-    res = path.join(process.cwd(), confFile)
-    // check file exists
+    const composerPath = path.join(process.cwd(), confFile)
     try {
-      fs.accessSync(res, fs.F_OK)
+      // check file exists
+      fs.accessSync(composerPath, fs.F_OK)
+      // access the module and retrieve the list of plugins
+      res = require(composerPath)()
     } catch (e) {
-      error(`Plugin configuration module '${res}' doesn't exist.`)
+      error(`Module '${res}' doesn't exist or isn't a valid module.`, e)
       exit(1)
     }
   } else if (pluginsList) {

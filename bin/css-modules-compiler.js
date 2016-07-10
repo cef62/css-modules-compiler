@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const { exit } = require('shelljs')
+const path = require('path')
+const fs = require('fs')
 const emoji = require('node-emoji')
 const debug = require('debug')('cmc:bin')
 const error = require('debug')('cmc:bin:error')
@@ -12,6 +14,7 @@ const {
   plugins = [],
   name,
   blacklist = [],
+  pconf,
 } = require('yargs')
 .usage('$0 -s sourceFolder -t targetFolder -n style.css -p postcss-cssnext autoprefixer')
 .help()
@@ -36,6 +39,14 @@ const {
     + ' This parameter must be defined as last.',
   type: 'array',
 })
+.option('plugins-config', {
+  alias: 'pconf',
+  requiresArg: true,
+  describe: 'Path to a node module invoked at runtime to receive a list of plugins.'
+    + 'The modules must export a function.',
+  normalize: true,
+  type: 'string',
+})
 .option('n', {
   alias: 'name',
   requiresArg: true,
@@ -50,9 +61,27 @@ const {
   type: 'array',
 }).argv
 
+const getPlugins = (confFile, pluginsList) => {
+  let res
+  if (confFile) {
+    // get full path to config file
+    res = path.join(process.cwd(), confFile)
+    // check file exists
+    try {
+      fs.accessSync(res, fs.F_OK)
+    } catch (e) {
+      error(`Plugin configuration module '${res}' doesn't exist.`)
+      exit(1)
+    }
+  } else if (pluginsList) {
+    res = pluginsList.map((moduleName) => require(moduleName)())
+  }
+  return res
+}
+
 const options = {
   targetFolder: target,
-  plugins: plugins.map((moduleName) => require(moduleName)()),
+  plugins: getPlugins(pconf, plugins),
   targetName: name,
   blacklist,
 }

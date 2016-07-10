@@ -39,16 +39,15 @@ const {
 .option('n', {
   alias: 'name',
   requiresArg: true,
-  describe: 'Name for the generated css file, default to style.css',
+  describe: 'Name for the generated css file, default to styles.css',
   type: 'string',
-  default: 'style.css',
+  default: 'styles.css',
 })
 .option('b', {
   alias: 'blacklist',
   requiresArg: true,
   describe: 'Space separated sequence of patterns used to filter css files from compilation.',
   type: 'array',
-  default: 'style.css',
 }).argv
 
 const options = {

@@ -124,7 +124,7 @@ const execCompileCss = (fileName, workingDir, blacklist = [], plugins = []) =>
 const DEFAULT_OPTIONS = {
   plugins: [],
   targetFolder: null,
-  targetName: 'style.css',
+  targetName: 'styles.css',
   blacklist: [],
 }
 

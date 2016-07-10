@@ -1,12 +1,11 @@
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
-const fsExtra = Promise.promisifyAll(require('fs-extra'))
 const path = require('path')
 const read = require('fs-readdir-recursive')
-const del = require('del')
 const listSelectors = require('list-selectors')
 
 const { convertCssMapToAstMap } = require('./transformer')
+const { updateFilesystem, cleanCss, concatenateCss, copySourceFolder } = require('./utils')
 const { extract } = require('./extractor')
 const { updateCssImports } = require('./update-imports')
 
@@ -15,15 +14,6 @@ const debug = require('debug')('cmc:compiler')
 const error = require('debug')('cmc:compiler:error')
 
 const filter = (file) => file.endsWith('.js')
-
-const updateFilesystem = ({ file, code }) => {
-  // write only files that have a truthy returned code value
-  if (code) {
-    return fs.writeFileAsync(file, code)
-  }
-
-  return Promise.resolve()
-}
 
 const updateImports = (sourcePath) => (opts) => {
   // create an array where values are in a valid AST object property
@@ -43,18 +33,6 @@ const updateImports = (sourcePath) => (opts) => {
   return Promise.all(processes)
     .then(updateFilesystem)
     .then(() => (opts))
-}
-
-const cleanCss = (sourcePath) => (opts) => {
-  const files = opts.files.map((file) => path.join(sourcePath, file))
-  return del(files)
-    .then(() => (opts))
-}
-
-const concatenateCss = (targetFolder, targetName) => (opts) => {
-  const cssOutput = path.join(targetFolder, targetName)
-  return fs.writeFileAsync(cssOutput, opts.styles)
-    .then(() => Object.assign({}, opts, { cssOutput }))
 }
 
 const clearJsonMap = (opts) => new Promise((resolve) => {
@@ -87,19 +65,6 @@ const clearJsonMap = (opts) => new Promise((resolve) => {
     resolve(Object.assign({}, opts, { map }))
   })
 })
-
-const copySourceFolder = (source, target) => {
-  if (!target || source === target) {
-    return Promise.resolve(source)
-  }
-
-  return fsExtra.copyAsync(source, target, {
-    clobber: true,
-    filter(newTarget) {
-      return newTarget.indexOf('.DS_Store') === -1
-    },
-  }).then(() => target)
-}
 
 const execCompileCss = (fileName, workingDir, blacklist = [], plugins = []) =>
   new Promise((resolve) => {

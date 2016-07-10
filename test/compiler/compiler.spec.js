@@ -12,12 +12,12 @@ describe('compiler', () => {
   beforeEach(() => del(targetFolder))
 
   it('works', () => {
-    const expectedStyles = fs.readFileSync(`${root}/expected/style.css`)
+    const expectedStyles = fs.readFileSync(`${root}/expected/style.css`, 'utf8')
     const expectedApp = require(`${root}/expected/app.js`)(targetFolder)
 
     return compileCss(`${root}/fixtures/src`, { targetFolder }).then(() => {
-      const styles = fs.readFileSync(`${targetFolder}/style.css`)
-      const app = fs.readFileSync(`${targetFolder}/app.js`)
+      const styles = fs.readFileSync(`${targetFolder}/style.css`, 'utf8')
+      const app = fs.readFileSync(`${targetFolder}/app.js`, 'utf8')
 
       assert.equal(styles.toString(), expectedStyles.toString())
       assert.equal(app.toString(), expectedApp)

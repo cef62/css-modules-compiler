@@ -24,7 +24,6 @@
   "homepage": "https://github.com/cef62/css-modules-compiler#readme",
   "devDependencies": {
     "babel-plugin-add-module-exports": "^0.2.1",
-    "basscss": "8.0.1",
     "emoji-reporter": "0.3.0",
     "eslint": "3.0.0",
     "eslint-config-airbnb": "9.0.1",

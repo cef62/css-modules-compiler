@@ -1,8 +1,16 @@
 {
   "extends": "airbnb",
+
   "env": {
     "mocha": true
   },
+
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+
   "rules": {
     "semi": [2, "never"],
     "quotes": [2, "single", {"allowTemplateLiterals": true}],

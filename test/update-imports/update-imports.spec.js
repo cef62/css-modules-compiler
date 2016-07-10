@@ -3,29 +3,56 @@ import assert from 'assert'
 
 import { updateCssImports } from '../../src/update-imports'
 
-const test = (folder, desc, msg, assertions) => {
-  describe(desc, () => {
-    it(msg, () => {
-      const root = path.join(__dirname, `./${folder}`)
-      const file = `${root}/fixtures/foo.js.txt`
-      const output = require(`./${folder}/expected/get-expected`)()
-      const astMap = require(`./${folder}/fixtures/get-ast-map`)()
+describe('updateCssImports,', () => {
+  describe('basic', () => {
+    it('works', () => {
+      const root = path.join(__dirname, `./basic`)
+      const file = `${root}/fixtures/foo.js`
+      const output = require(`${root}/expected/foo`)(`${root}/fixtures`)
+
+      const astMap = new Map()
+      astMap.set(`${root}/fixtures/foo.css`, [{
+        type: 'ObjectProperty',
+        key: { type: 'Identifier', name: 'bar' },
+        value: {
+          type: 'StringLiteral',
+          value: 'baz',
+        },
+        computed: false,
+        shorthand: false,
+        decorators: null,
+      }])
 
       return updateCssImports(file, astMap).then((result) => {
-        assertions(result, output)
+        assert.equal(result, output)
       })
     })
   })
-}
 
-describe('Update import,', () => {
-  test('basic', 'Basic import', 'should return updated js code', (res, output) => {
-    assert.equal(res, output)
+  describe('no-import', () => {
+    it('works', () => {
+      const root = path.join(__dirname, `./no-import`)
+      const file = `${root}/fixtures/foo.js`
+
+      const astMap = new Map()
+
+      return updateCssImports(file, astMap).then((result) => {
+        assert.ifError(result)
+      })
+    })
   })
-  test('no-match', 'No match', 'should return false', (res) => {
-    assert.ifError(res)
-  })
-  test('no-import', 'No css imports in file', 'should return false', (res) => {
-    assert.ifError(res)
+
+  describe('no-match', () => {
+    it('works', () => {
+      const root = path.join(__dirname, `./no-match`)
+      const file = `${root}/fixtures/foo.js`
+
+      const astMap = new Map()
+      astMap.set(`${root}/fixtures/bar.css`, null)
+
+      return updateCssImports(file, astMap).then((result) => {
+        assert.ifError(result)
+      })
+    })
   })
 })

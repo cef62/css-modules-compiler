@@ -5,7 +5,7 @@
   "bin": "./bin/css-modules-compiler.js",
   "description": "An automation task to compile css-modules and remove it from the components",
   "scripts": {
-    "test": "NODE_ENV=test mocha --compilers js:babel-register --reporter emoji-reporter --recursive",
+    "test": "NODE_ENV=test mocha --compilers js:babel-register --reporter emoji-reporter ./test/**/*.spec.js",
     "test:watch": "npm test -- --watch",
     "lint": "eslint ./src"
   },

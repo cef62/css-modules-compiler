@@ -27,6 +27,7 @@
   "devDependencies": {
     "babel-core": "6.10.4",
     "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-rewire": "1.0.0-rc-4",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-preset-power-assert": "1.0.0",
     "babel-register": "6.9.0",

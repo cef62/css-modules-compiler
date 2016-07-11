@@ -77,7 +77,7 @@ exports.handler = (argv) => {
         // access the module and retrieve the list of plugins
         res = require(composerPath)()
       } catch (e) {
-        error(`Module '${res}' doesn't exist or isn't a valid module.`, e)
+        error(`Module '${composerPath}' doesn't exist or isn't a valid module.`, e)
         exit(1)
       }
     } else if (pluginsList) {

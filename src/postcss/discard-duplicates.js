@@ -71,4 +71,3 @@ const discardDuplicates = (css, result) => {
 }
 
 module.exports = postcss.plugin('postcss-discard-duplicates', () => discardDuplicates)
-

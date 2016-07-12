@@ -2,30 +2,25 @@
 import assert from 'assert'
 import { builder, command, describe as describeCommand, handler } from '../../src/cli-parser'
 
-describe('CLI parser - .command', () => {
-  it('should equal to `compile`', () => {
+describe('CLI parser', () => {
+  it('.command should equal to `compile`', () => {
     assert.equal(command, 'compile')
   })
-})
 
-describe('CLI parser - .describe', () => {
-  it('should equal to '
-    + '`Compile css-modukes to a single css file and update css import in Javascript`', () => {
+  it('.describe should equal to '
+    + '`Compile css-modukes to a single css file and update css import in Javascript`',
+  () => {
     assert.equal(
       describeCommand,
       'Compile css-modukes to a single css file and update css import in Javascript'
     )
   })
-})
 
-describe('CLI parser - .builder', () => {
-  it('should be a function', () => {
+  it('.builder should be a function', () => {
     assert.equal(typeof builder, 'function')
   })
-})
 
-describe('CLI parser - .handler', () => {
-  it('should be a function', () => {
+  it('.handler should be a function', () => {
     assert.equal(typeof handler, 'function')
   })
 })

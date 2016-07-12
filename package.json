@@ -6,8 +6,8 @@
   "description": "An automation task to compile css-modules and remove it from the components",
   "scripts": {
     "test": "NODE_ENV=test mocha --compilers js:babel-register --reporter emoji-reporter ./test/**/*.spec.js",
-    "coverage": "NODE_ENV=test nyc --cache --require babel-core/register mocha ./test/**/*.spec.js --timeout=8000",
-    "coverage:html": "NODE_ENV=test nyc --cache --reporter=lcov --require babel-core/register mocha ./test/**/*.spec.js --timeout=8000",
+    "coverage": "NODE_ENV=test nyc npm test",
+    "coverage:html": "NODE_ENV=test nyc --reporter=lcov npm test",
     "test:watch": "npm test -- --watch",
     "lint": "eslint ./src ./test/**/*.spec.js"
   },

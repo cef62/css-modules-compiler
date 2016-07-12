@@ -1,44 +1,24 @@
-import Promise from 'bluebird'
-
 // ------------------------------------------------------
-// Compiler mock
+// create spies
 
-function compiler(...args) {
-  compiler.invoked(args)
-  return new Promise(() => {})
+const noop = () => {}
+exports.createSpy = (returnFn = noop) => {
+  function spy(...args) {
+    spy.invoked(args)
+    return returnFn(args)
+  }
+  spy.counter = 0
+  spy.lastArgs = null
+  spy.invoked = (args) => {
+    spy.counter = spy.counter + 1
+    spy.lastArgs = args
+  }
+  spy.reset = () => {
+    spy.counter = 0
+    spy.lastArgs = null
+  }
+  return spy
 }
-compiler.counter = 0
-compiler.lastArgs = null
-compiler.invoked = (args) => {
-  compiler.counter = compiler.counter + 1
-  compiler.lastArgs = args
-}
-compiler.reset = () => {
-  compiler.counter = 0
-  compiler.lastArgs = null
-}
-
-exports.compiler = compiler
-
-// ------------------------------------------------------
-// Error logger mock
-
-function error(...args) {
-  error.invoked(args)
-  return new Promise(() => {})
-}
-error.counter = 0
-error.lastArgs = null
-error.invoked = (args) => {
-  error.counter = error.counter + 1
-  error.lastArgs = args
-}
-error.reset = () => {
-  error.counter = 0
-  error.lastArgs = null
-}
-
-exports.error = error
 
 // ------------------------------------------------------
 // yargs mock
@@ -60,7 +40,7 @@ const yargs = {
   options: [],
 }
 
-exports.yargs = yargs
+exports.yargsMock = yargs
 
 // ------------------------------------------------------
 // node `path` module mock
@@ -69,7 +49,7 @@ const path = {
   join(...args) { return args.join('/') },
 }
 
-exports.path = path
+exports.pathMock = path
 
 // ------------------------------------------------------
 // node `fs` module mock
@@ -84,4 +64,4 @@ const fs = {
   },
 }
 
-exports.fs = fs
+exports.fsMock = fs

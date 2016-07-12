@@ -45,23 +45,18 @@ exports.yargsMock = yargs
 // ------------------------------------------------------
 // node `path` module mock
 
-const path = {
+exports.pathMock = {
   join(...args) { return args.join('/') },
 }
-
-exports.pathMock = path
 
 // ------------------------------------------------------
 // node `fs` module mock
 
-let failAccessSync
-const fs = {
+exports.fsMock = (failAccessSync) => ({
   F_OK: 'F_OK',
   accessSync() {
     if (failAccessSync) {
       throw new Error('error')
     }
   },
-}
-
-exports.fsMock = fs
+})

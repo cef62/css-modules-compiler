@@ -1,0 +1,21 @@
+{
+  "gitbook": "3.1.1",
+  "root": "./docs",
+  "structure": {
+    "summary": "Summary.md"
+  },
+  "plugins": ["prism", "-highlight", "github"],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/cef62/css-modules-compiler"
+    },
+    "sharing": {
+      "facebook": true,
+      "twitter": true,
+      "google": true,
+      "weibo": false,
+      "instapaper": false,
+      "vk": false
+    }
+  }
+}

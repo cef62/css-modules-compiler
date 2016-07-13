@@ -1,0 +1,8 @@
+src/
+lib/
+test/
+examples/
+coverage/
+package.json
+webpack*
+CHANGELOG.md

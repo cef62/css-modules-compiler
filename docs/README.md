@@ -1,0 +1,13 @@
+# CSS Modules Compiler
+
+> Compile css-modules to static css and remove non standard code from javascript files
+
+This module started to support a real project using [css-modules](https://github.com/css-modules/css-modules), [postcss](https://github.com/postcss/postcss) and [webpack](https://webpack.github.io/) to produce a library of reusable components. The project goal is to expose a rich set of components offering an easy way for other projects to use the desired components benefiting from the [tree-shaking](https://medium.com/@roman01la/dead-code-elimination-and-tree-shaking-in-javascript-build-systems-fb8512c86edf#.krdhto4gs) offered by modern bundlers. To achieve the goal the library must expose directly `es2015` modules, without usage of transpilers and file concatenation.
+
+For a non-visual library this is a trivial problem to solve. For a component library using `css-modules` and `postcss` plugins is a real problematic situation. The fast and dirty solution is to consume directly the library source code from the consumer project, this approach bring several drawbacks: the consumer project must knows specific details on how to compile the library and must have all the library de-dependencies installed. It can be done but in th end is really better avoid separation between library and final project.
+The ideal solution is to compile the `css-modules` and consume the `es2015` modules without css imports. Currently there are really few toolsthat compile `css-module` extracting and decoupling them from the javascript modules and none of this tool allows the flexibility we want.
+
+## What css-module-compiler can do for you
+
+The compiler is a small autonomous node module tht can be used programmatically from javascript or directly from the CLI. To use the module is enough invoke it passing a source folder, the folder will be traversed and all css files will be compiled as `css-modules`, all the generated css files will be merged, deduped and optimized in a single css files. All `es2015` modules will be checked using an AST parser and all `css` import declaration will be substituted with a static object containing the generated css classnames.
+The compile accept several options: postcss plugins to be used when compiling css files, a blacklist of pattern used to avoid compilation of non `css-modules` files, a target folder to duplicate the source and avoid changing the original sources and more.

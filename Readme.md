@@ -1,8 +1,4 @@
-[![Build Status](https://travis-ci.org/cef62/css-modules-compiler.svg?branch=extractor-tests)](https://travis-ci.org/cef62/css-modules-compiler)
-
-## Attention
-
-The module is still in active development, APIs may change often.
+[![build status](https://img.shields.io/travis/cef62/css-modules-compiler/master.svg?style=flat-square)](https://travis-ci.org/cef62/css-modules-compiler) [![npm version](https://img.shields.io/npm/v/css-modules-compiler.svg?style=flat-square)](https://www.npmjs.com/package/css-modules-compiler) [![npm downloads](https://img.shields.io/npm/dm/css-modules-compiler.svg?style=flat-square)](https://www.npmjs.com/package/css-modules-compiler) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Css Modules Compiler
 
@@ -25,3 +21,4 @@ To try the lib clone the repository, install `npm` deps and run
 ```
 
 The `tmp` folder will be copied to `build` and then processed.
+

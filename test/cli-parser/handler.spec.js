@@ -39,6 +39,37 @@ describe('CLI parser', () => {
       assert.equal(compiler.lastArgs[1].plugins.length, 0)
     })
 
+    it('should use first non-hypenated option as source folder if no --source is defined', () => {
+      compiler.reset()
+      let argv = {
+        source: './src',
+        _: ['compile', './src-folder', 'some', 'other', 'option'],
+      }
+      handler(argv)
+      assert.equal(compiler.counter, 1)
+      assert.equal(compiler.lastArgs[0], argv.source)
+
+      compiler.reset()
+      argv = {
+        _: ['compile', './src-folder', 'some', 'other', 'option'],
+      }
+      handler(argv)
+      assert.equal(compiler.counter, 1)
+      assert.equal(compiler.lastArgs[0], argv._[1])
+    })
+
+    it('should exit logging an error if no source is given', () => {
+      compiler.reset()
+      error.reset()
+      handler({})
+      assert.equal(compiler.counter, 0)
+      assert.equal(error.counter, 1)
+      assert.equal(
+        error.lastArgs[0],
+        'Error Compiling css Modules, a source folder must be defined!'
+      )
+    })
+
     it('should use passed blacklist', () => {
       handler.__Rewire__('getPlugins', getPluginsEmpty)
       getPluginsEmpty.reset()

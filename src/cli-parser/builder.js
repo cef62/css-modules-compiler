@@ -2,7 +2,6 @@ module.exports = (yargs) => yargs
   .usage('$0 -s <source folder> -t <target folder> -n <output name> -p <plugin modules>')
   .option('s', {
     alias: 'source',
-    demand: true,
     requiresArg: true,
     describe: 'Source folder to be processed, can be a relative or an absolute path.',
     type: 'string',

@@ -14,6 +14,7 @@ const closeProcess = (code) => {
 
 module.exports = (argv) => {
   const {
+    _ = [],
     source,
     target,
     name,
@@ -38,7 +39,14 @@ module.exports = (argv) => {
     options.plugins = []
   }
 
-  return compileCss(source, options)
+  const srcFolder = !source && _.length > 1 && _[1] ? _[1] : source
+
+  if (!srcFolder) {
+    error(`Error Compiling css Modules, a source folder must be defined!`)
+    return closeProcess(1)
+  }
+
+  return compileCss(srcFolder, options)
     .then(() => {
       debug(`Css modules compiled! ${emoji.get(':punch:')}`)
       closeProcess(0)

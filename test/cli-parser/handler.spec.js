@@ -18,10 +18,16 @@ handler.__Rewire__('debug', debug)
 
 describe('CLI parser', () => {
   describe('handler', () => {
+    beforeEach(() => {
+      compiler.reset()
+      error.reset()
+      getPluginsFail.reset()
+      getPluginsSuccess.reset()
+      getPluginsEmpty.reset()
+    })
+
     it('should parse parameters and apply defaults where required', () => {
       handler.__Rewire__('getPlugins', getPluginsEmpty)
-      getPluginsEmpty.reset()
-      compiler.reset()
 
       const argv = {
         source: './src',
@@ -40,7 +46,6 @@ describe('CLI parser', () => {
     })
 
     it('should use first non-hypenated option as source folder if no --source is defined', () => {
-      compiler.reset()
       let argv = {
         source: './src',
         _: ['compile', './src-folder', 'some', 'other', 'option'],
@@ -59,8 +64,6 @@ describe('CLI parser', () => {
     })
 
     it('should exit logging an error if no source is given', () => {
-      compiler.reset()
-      error.reset()
       handler({})
       assert.equal(compiler.counter, 0)
       assert.equal(error.counter, 1)
@@ -72,8 +75,6 @@ describe('CLI parser', () => {
 
     it('should use passed blacklist', () => {
       handler.__Rewire__('getPlugins', getPluginsEmpty)
-      getPluginsEmpty.reset()
-      compiler.reset()
 
       const argv = {
         source: './src',
@@ -89,9 +90,6 @@ describe('CLI parser', () => {
 
     it('should throws if `get-plugin` return an error string', () => {
       handler.__Rewire__('getPlugins', getPluginsFail)
-      getPluginsFail.reset()
-      compiler.reset()
-      error.reset()
 
       const argv = {
         plugins: ['a', 'b'],
@@ -105,8 +103,6 @@ describe('CLI parser', () => {
 
     it('should pass the loaded plugins list to the compiler', () => {
       handler.__Rewire__('getPlugins', getPluginsSuccess)
-      getPluginsSuccess.reset()
-      compiler.reset()
 
       const argv = {
         source: './src',
@@ -116,7 +112,7 @@ describe('CLI parser', () => {
       }
       handler(argv)
 
-      assert.equal(getPluginsFail.counter, 1)
+      assert.equal(getPluginsSuccess.counter, 1)
       assert.equal(compiler.counter, 1)
       assert.ok(Array.isArray(compiler.lastArgs[1].plugins))
       assert.equal(compiler.lastArgs[1].plugins.length, 2)

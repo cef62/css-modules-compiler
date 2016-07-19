@@ -1,0 +1,5 @@
+@import './bar.css';
+
+.foo {
+  composes: baz from './baz.css';
+}

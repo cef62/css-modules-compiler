@@ -13,7 +13,9 @@
     "docs:clean": "node ./scripts/docs.js -a clean",
     "docs:build": "node ./scripts/docs.js -a build",
     "docs:watch": "node ./scripts/docs.js -a watch",
-    "docs:publish": "node ./scripts/docs.js -a publish"
+    "docs:publish": "node ./scripts/docs.js -a publish",
+    "examples:basic": "node ./bin/css-modules-compiler compile ./examples/basic/src -t ./examples/basic/build",
+    "examples:advanced": "node ./bin/css-modules-compiler.js compile ./examples/advanced/src -t ./examples/advanced/build -b ba*.css -p postcss-import"
   },
   "authors": [
     "Matteo Ronchi <matteo.ronchi@gmail.com>",

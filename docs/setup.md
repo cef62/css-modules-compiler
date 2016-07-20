@@ -13,8 +13,8 @@ Once is installed you're ready to go.
 The module can be
 
 * invoked from `cli`
-* invoked from an npm script
-* executed directly from nodeJS modules or gulp tasks
+* invoked from a npm script
+* executed directly from Node.js modules or gulp tasks
 
 See the [Quick Start](./quick-start.md) page for more details.
 

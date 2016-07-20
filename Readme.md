@@ -2,23 +2,30 @@
 
 ## Css Modules Compiler
 
-The module take a folder of javascript sources using css-modules, optionally clone it, and then
-compile all the scoped css in a single file. The original css files are deleted and all the import
-in javascript files are substituted with static map generated with the css-modules compilation.
+The compiler is a small autonomous node module that can be used programmatically from Javascript or directly from the CLI. To use the module is enough to invoke it passing a source folder, the folder will be traversed and all the css files will be compiled as `css-modules`, all the generated css files will be merged, deduped and optimized in a single css file. All the `es2015` modules will be checked using an AST parser and all the `css` import declaration will be substituted with a static object containing the generated css classnames.
+The compile command accepts several options: postcss plugins to be used when compiling css files, a blacklist of patterns used to avoid compilation of non `css-modules` files, a target folder to duplicate the source and avoid changing the original sources and more.
+
+## Documentation
+
+See the [official documentation](https://cef62.github.io/css-modules-compiler)
 
 ## Tests
 
 ```
-npm test
+$ npm test
 ```
 
 ## Try it
 
-To try the lib clone the repository, install `npm` deps and run
+To try the module clone the repository, install `npm` dependencies and then run the following commands to see it in action.
 
 ```
-./bin/css-modules-compiler.js -s tmp -t build -n final.css
-```
+npm run examples:basic
+``` 
 
-The `tmp` folder will be copied to `build` and then processed.
+```
+npm run examples:advanced
+``` 
+
+
 

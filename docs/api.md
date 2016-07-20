@@ -15,4 +15,4 @@ Relative or absolute path to the source folder containing the css/js to be proce
 * **`targetFolder`** *string* Relative or absolute path to the target folder. The source folder will be copied to the given path and its content will be compiled.
 * **`targetName`** *string* Name used to create the final compiled `css` output, the extension is required. Eg. `final-output.css`
 * **`plugins`** *array* List of **postcss plugins** instances ready to be passed to postcss. Eg. `[atImport(), colorFunction()]`
-* **`blacklist`** *array* List of **glob pattern** used to filter out some css files from css compilation. Eg. `['*.global.css', 'main.css']`
+* **`blacklist`** *array* List of **glob patterns** used to filter out some css files from css compilation. Eg. `['*.global.css', 'main.css']`

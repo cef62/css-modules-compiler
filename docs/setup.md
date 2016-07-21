@@ -3,7 +3,7 @@
 `css-modules-compiler` is available as npm module, to use it on your project run:
 
 ```shell
-$ npm install --save-dev css-modules-compiler
+npm install --save-dev css-modules-compiler
 ```
 
 Once is installed you're ready to go.

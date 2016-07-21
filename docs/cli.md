@@ -1,7 +1,7 @@
 # CLI
 
 ```shell
-$ css-modules-compiler.js compile --help
+css-modules-compiler.js compile --help
 
 Usage
     css-modules-compiler.js -s <source folder> -t <target folder> -n <output name> -p <plugin modules>

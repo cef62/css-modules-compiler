@@ -14,7 +14,7 @@ See the [official documentation](https://cef62.github.io/css-modules-compiler)
 
 ## Install
 
-`css-modules-compiler` is available as npm module, to use it on your project run:
+`css-modules-compiler` is available as `npm` module, to use it on your project run:
 
 ```shell
 npm install --save-dev css-modules-compiler

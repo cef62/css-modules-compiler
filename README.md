@@ -2,7 +2,7 @@
 
 ## CSS Modules Compiler
 
-The compiler is a small autonomous Node.js module that can be used programmatically from JavaScript or directly from the CLI. 
+The compiler is a small autonomous Node.js module that can be used programmatically from JavaScript or directly from the CLI.
 
 To use the module is enough to invoke it passing a source folder, the folder will be traversed and all the CSS files will be compiled as `css-modules`, all the generated CSS files will be merged, deduped and optimized into a single CSS file. All the `es2015` modules will be checked using an AST parser and all the `css` import declaration will be substituted with a static object containing the generated CSS class names.
 
@@ -11,6 +11,14 @@ The compile command accepts several options: the postcss plugins to be used when
 ## Documentation
 
 See the [official documentation](https://cef62.github.io/css-modules-compiler)
+
+## Install
+
+`css-modules-compiler` is available as npm module, to use it on your project run:
+
+```shell
+npm install --save-dev css-modules-compiler
+```
 
 ## Tests
 
@@ -24,8 +32,8 @@ To try the module clone the repository, install `npm` dependencies and then run 
 
 ```
 npm run examples:basic
-``` 
+```
 
 ```
 npm run examples:advanced
-``` 
+```
